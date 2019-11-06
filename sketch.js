@@ -12,7 +12,8 @@ var playInd;
 var firstFetched;
 var previousDrawing;
 
-var drawnPrev, spacePressed;
+
+var drawnPrev, spacePressed, loadedFirst;
 
 var name = "cat";
 
@@ -37,6 +38,7 @@ function setup() {
 
   playBack = false;
   firstFetched = false;
+  loadedFirst = false;
   drawnPrev = false;
   spacePressed = false;
 
@@ -59,6 +61,8 @@ function bgRect() {
   noStroke();
   rectMode(CORNER);
   rect(0, 0, 640, 480);
+
+
 }
 
 function recreate(inJSON, trans) {
@@ -140,11 +144,18 @@ function keyPressed() {
 
   }
 
+  if (keyCode === LEFT_ARROW) {
+    background(250);
+    bgRect();
+
+    lines = [];
+    drawnPrev = false;
+  }
+
 
   if (keyCode === RIGHT_ARROW) {
 
-    background(250);
-    bgRect();
+
 
 
     console.log(lines.length * 4);
@@ -154,7 +165,7 @@ function keyPressed() {
     ref.push(lObj);
     console.log(lObj);
 
-    lines = [];
+
 
     previousDrawing = lObj;
     drawnPrev = false;
@@ -171,6 +182,17 @@ function draw() {
   stroke(10);
 
   //print("first " + drawings[playInd]);
+
+
+
+  if (previousDrawing === null) {
+    fill(0);
+    text(20, 20, "LOADING");
+
+  } else {
+    loadedFirst = true;
+  }
+
 
   if (!playBack && !drawnPrev && previousDrawing != null) {
     recreate(previousDrawing, true);
@@ -194,6 +216,9 @@ function draw() {
       playInd = 0;
     }
   }
+
+
+
 
 }
 
