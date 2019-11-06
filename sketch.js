@@ -12,6 +12,8 @@ var playInd;
 var firstFetched;
 var previousDrawing;
 
+var catPic;
+
 
 var drawnPrev, spacePressed, loadedFirst;
 
@@ -26,6 +28,8 @@ function preload() {
 
   extJSON = loadJSON("cat_2.json");
   console.log(extJSON);
+
+  catpic = loadImage("catpic.jpg")
 
 }
 
@@ -62,6 +66,7 @@ function bgRect() {
   rectMode(CORNER);
   rect(0, 0, 640, 480);
 
+  image(catpic, 0, 0, 640, 640);
 
 }
 
@@ -169,6 +174,8 @@ function keyPressed() {
 
     previousDrawing = lObj;
     drawnPrev = false;
+
+    lines = [];
 
     //save(lObj, name + "_" + int(millis(), 0) + ".json");
 
