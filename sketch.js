@@ -13,9 +13,13 @@ var firstFetched;
 var previousDrawing;
 
 var catPic;
+var catVid;
+var vidFrameInterval;
+var howManyFrames;
 
 
-var drawnPrev, spacePressed, loadedFirst;
+
+var drawnPrev, spacePressed, loadedFirst, pagePressed, drawnVidFrame, vidLoaded;
 
 var name = "cat";
 
@@ -29,7 +33,10 @@ function preload() {
   extJSON = loadJSON("cat_2.json");
   console.log(extJSON);
 
-  catpic = loadImage("catpic.jpg")
+
+
+  catVid = createVideo("cat.mp4", onVidLoad(), vidFail());
+
 
 }
 
@@ -45,6 +52,9 @@ function setup() {
   loadedFirst = false;
   drawnPrev = false;
   spacePressed = false;
+  pagePressed = false;
+  drawnVidFrame = false;
+  vidLoaded = false;
 
   fireBaseInit();
 
@@ -53,10 +63,73 @@ function setup() {
   fetchDrawings();
   console.log(previousDrawing);
 
+  catVid.size(600, 600);
 
+  howManyFrames = 100;
+
+  vidFrameInterval = catVid.duration() / howManyFrames;
+
+  catVid.hide();
+
+  catVid.time = 1;
 
   // recreate(previousDrawing, true);
   bgRect();
+}
+
+function draw() {
+  stroke(10);
+
+  //print("first " + drawings[playInd]);
+
+  if (!drawnVidFrame && pagePressed && vidLoaded) {
+
+    image(catVid, 0, 0, 600, 600);
+    drawnVidFrame = true;
+  }
+
+
+
+  if (previousDrawing === null) {
+    fill(0);
+    text(20, 20, "LOADING");
+
+  } else {
+    loadedFirst = true;
+  }
+
+
+  if (!playBack && !drawnPrev && previousDrawing != null) {
+    recreate(previousDrawing, true);
+    drawnPrev = true;
+  }
+
+  //console.log(previousDrawing);
+
+  if (playBack && frameCount % 6 == 0) {
+    background(252);
+
+    console.log("drawings " + drawings);
+    // recreate(drawings[2]);
+    //console.log(drawings[2]);
+
+
+    recreate(drawings[playInd]);
+    playInd++;
+
+    if (playInd > howManyDrawings - 1) {
+      playInd = 0;
+    }
+  }
+
+}
+
+function onVidLoad() {
+  vidLoaded = true;
+}
+
+function vidFail() {
+  print("FAILED");
 }
 
 function bgRect() {
@@ -64,9 +137,13 @@ function bgRect() {
 
   noStroke();
   rectMode(CORNER);
-  rect(0, 0, 640, 480);
+  //rect(0, 0, 640, 480);
+  //catVid.time = 1;
+  // catVid.play();
+  // image(catVid, 100, 100, 500, 500);
+  // catVid.pause();
 
-  image(catpic, 0, 0, 640, 640);
+  //image(catpic, 0, 0, 640, 640);
 
 }
 
@@ -183,52 +260,6 @@ function keyPressed() {
 
 }
 
-
-
-function draw() {
-  stroke(10);
-
-  //print("first " + drawings[playInd]);
-
-
-
-  if (previousDrawing === null) {
-    fill(0);
-    text(20, 20, "LOADING");
-
-  } else {
-    loadedFirst = true;
-  }
-
-
-  if (!playBack && !drawnPrev && previousDrawing != null) {
-    recreate(previousDrawing, true);
-    drawnPrev = true;
-  }
-
-  console.log(previousDrawing);
-
-  if (playBack && frameCount % 6 == 0) {
-    background(252);
-
-    console.log("drawings " + drawings);
-    // recreate(drawings[2]);
-    //console.log(drawings[2]);
-
-
-    recreate(drawings[playInd]);
-    playInd++;
-
-    if (playInd > howManyDrawings - 1) {
-      playInd = 0;
-    }
-  }
-
-
-
-
-}
-
 function mouseDragged() {
 
   stroke(0);
@@ -238,6 +269,11 @@ function mouseDragged() {
     lines.push(coords)
 
   }
+}
+
+function mousePressed() {
+
+  pagePressed = true;
 }
 
 function fireBaseInit() {
