@@ -238,6 +238,7 @@ function keyPressed() {
   if (keyCode === RIGHT_ARROW) {
 
 
+    background(250);
 
 
     console.log(lines.length * 4);
