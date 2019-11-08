@@ -78,6 +78,8 @@ function setup() {
 }
 
 function draw() {
+
+
   stroke(10);
 
   //print("first " + drawings[playInd]);
@@ -122,6 +124,18 @@ function draw() {
     }
   }
 
+  playbackBar();
+
+
+}
+
+function playbackBar() {
+  if (playBack) {
+
+    fill(30);
+    ellipse(map(playInd, 0, howManyDrawings, 0, width), 20, width / 100, width / 100);
+
+  }
 }
 
 function onVidLoad() {
