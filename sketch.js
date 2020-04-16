@@ -17,6 +17,8 @@ var catVid;
 var vidFrameInterval;
 var howManyFrames;
 
+var checking = false;
+
 
 
 var drawnPrev, spacePressed, loadedFirst, pagePressed, drawnVidFrame, vidLoaded;
@@ -88,6 +90,7 @@ function draw() {
 
     image(catVid, 0, 0, 600, 600);
     drawnVidFrame = true;
+
   }
 
 
@@ -125,6 +128,24 @@ function draw() {
   }
 
   playbackBar();
+
+  //Tut text:
+
+  // if (checking) {
+  //   // fill(0);
+  //   noStroke();
+  //   // text("hello!",width/2,height*.1)
+  //   text("this is a collaborative flipbook", width / 2, height * .2)
+  //   text("the previous drawing will display in grey ", width / 2, height * .3);
+  //   text("(you may need to wait for a second)", width / 2, height * .4);
+  //   text("draw with the mouse", width / 2, height * .5);
+  //   text("when you're done with a frame press the right arrow key to submit", width / 2, height * .6);
+  //   text("press space to finish, and play the whole animation ", width / 2, height * .7);
+  //   text("(to see your contribution you may need to refresh)", width / 2, height * .8);
+  //   text("press h to close or open this menu", width / 2, height * .9);
+
+  //   stroke(10);
+  // }
 
 
 }
@@ -227,6 +248,10 @@ function gotData(data) {
 }
 
 function keyPressed() {
+
+  if (key == "h") {
+    checking = !checking;
+  }
 
   if (key === " ") {
     console.log("SPACE PRESSED");
